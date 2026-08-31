@@ -13,6 +13,13 @@
            url("Caravan.woff") format("woff");
       font-display: swap;
     }
+    @font-face {
+      font-family: "CaviarDreams";
+      src: url("CaviarDreams.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
 
     :root {
       --navy: #031E3D;
@@ -37,7 +44,7 @@
       min-width: 320px;
       background: var(--white);
       color: var(--ink);
-      font-family: Calibri, Arial, sans-serif;
+      font-family: "CaviarDreams", Arial, sans-serif;
       overflow-x: hidden;
     }
     button, input, textarea, select { font: inherit; }
@@ -79,6 +86,33 @@
     }
 
     main { width: 100%; }
+
+    /* Видео-фон для секций, где раньше был синий градиент */
+    .video-bg-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .video-bg-wrap video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: translate(-50%, -50%);
+    }
+    .video-bg-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(169,208,247,.18), transparent 32%),
+        linear-gradient(145deg, rgba(2,26,53,.72) 0%, rgba(6,50,93,.6) 48%, rgba(3,30,61,.78) 100%);
+    }
+    .has-video-bg { position: relative; }
+    .has-video-bg > .section-inner { position: relative; z-index: 2; }
 
     .section {
       position: relative;
@@ -130,9 +164,10 @@
     .hero-content { text-align: center; }
     .eyebrow {
       text-transform: uppercase;
-      letter-spacing: .23em;
-      font-size: 12px;
-      opacity: .78;
+      letter-spacing: .12em;
+      font-size: 30px;
+      line-height: 1.25;
+      opacity: .9;
       margin-bottom: 40px;
     }
     .names {
@@ -152,8 +187,27 @@
     }
     .hero-date {
       margin-top: 54px;
-      font-size: clamp(17px, 5vw, 25px);
-      letter-spacing: .08em;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 14px;
+    }
+    .hero-date .date-month {
+      font-size: clamp(13px, 3.4vw, 16px);
+      letter-spacing: .14em;
+      text-transform: lowercase;
+      opacity: .8;
+    }
+    .hero-date .date-day {
+      font-size: clamp(56px, 17vw, 92px);
+      font-weight: 300;
+      letter-spacing: 0;
+      line-height: 1;
+    }
+    .hero-date .date-year {
+      font-size: clamp(20px, 6vw, 30px);
+      opacity: .92;
+      letter-spacing: .04em;
     }
     .scroll-hint {
       position: absolute;
@@ -283,10 +337,14 @@
       display: grid;
       grid-template-columns: 46px 1fr;
       gap: 18px;
-      min-height: 105px;
+      min-height: 78px;
       align-items: start;
     }
-    .event:last-child { min-height: 80px; }
+    .event:last-child { min-height: 60px; }
+    .event.reveal:nth-child(1) { transition-delay: 0s; }
+    .event.reveal:nth-child(2) { transition-delay: .1s; }
+    .event.reveal:nth-child(3) { transition-delay: .2s; }
+    .event.reveal:nth-child(4) { transition-delay: .3s; }
     .event-dot {
       width: 46px;
       height: 46px;
@@ -299,6 +357,13 @@
       font-size: 10px;
       letter-spacing: .06em;
       z-index: 1;
+      overflow: hidden;
+    }
+    .event-dot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
     }
     .event-time {
       font-size: 24px;
@@ -356,6 +421,23 @@
       color: white;
       background: var(--navy);
       border-color: var(--navy);
+    }
+
+    .location-photo {
+      display: block;
+      width: 100vw;
+      max-width: 100vw;
+      margin: 34px calc(50% - 50vw) 0;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+    @media (min-width: 700px) {
+      .location-photo {
+        width: 100%;
+        max-width: 100%;
+        margin: 34px 0 0;
+        border-radius: 4px;
+      }
     }
 
     /* Dress code */
@@ -432,11 +514,31 @@
     .hint-icon {
       width: 48px;
       height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
       display: grid;
       place-items: center;
       color: var(--navy);
       font-size: 29px;
-      opacity: .82;
+      opacity: .92;
+      background: #e8eef5;
+    }
+    .hint-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hint-phone-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      color: var(--navy);
+      font-size: 17px;
+      text-decoration: none;
+      letter-spacing: .02em;
+      border-bottom: 1px solid var(--navy);
+      padding-bottom: 1px;
     }
     .hint-title {
       margin: 0 0 12px;
@@ -485,6 +587,24 @@
       transition: border-color .2s ease, background .2s ease;
     }
     .field textarea { min-height: 105px; resize: vertical; }
+    .checkbox-group {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px 14px;
+    }
+    .checkbox-option {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 14px;
+      line-height: 1.3;
+    }
+    .checkbox-option input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
+      accent-color: var(--pale-blue);
+    }
     .field select option { color: var(--ink); }
     .field input::placeholder,
     .field textarea::placeholder { color: rgba(255,255,255,.52); }
@@ -530,6 +650,18 @@
       line-height: .9;
       color: var(--navy);
       margin: 0 0 20px;
+    }
+    .footer-names span {
+      display: block;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 1.1s cubic-bezier(.2,.7,.2,1), transform 1.1s cubic-bezier(.2,.7,.2,1);
+    }
+    .footer-names.visible span:nth-child(1) { transition-delay: .1s; }
+    .footer-names.visible span:nth-child(2) { transition-delay: .55s; }
+    .footer-names.visible span {
+      opacity: 1;
+      transform: none;
     }
     .footer-date {
       letter-spacing: .13em;
@@ -591,12 +723,19 @@
 
   <main>
     <!-- 1. Обложка -->
-    <section class="section hero">
+    <section class="section hero has-video-bg">
+      <div class="video-bg-wrap">
+        <video src="bg-video.mp4" autoplay muted loop playsinline></video>
+      </div>
       <div class="section-inner hero-content">
         <div class="eyebrow reveal">Приглашение на свадьбу</div>
         <h1 class="names" id="heroNames" aria-label="Егор и Жанна"></h1>
         <div class="ampersand reveal">&amp;</div>
-        <div class="hero-date reveal">31 октября 2026</div>
+        <div class="hero-date reveal">
+          <span class="date-month">октября</span>
+          <span class="date-day">31</span>
+          <span class="date-year">2026</span>
+        </div>
       </div>
       <div class="scroll-hint">ЛИСТАЙТЕ ВНИЗ</div>
     </section>
@@ -631,12 +770,15 @@
     </section>
 
     <!-- 4. Тайминг -->
-    <section class="section timeline-section">
+    <section class="section timeline-section has-video-bg">
+      <div class="video-bg-wrap">
+        <video src="bg-video.mp4" autoplay muted loop playsinline></video>
+      </div>
       <div class="section-inner">
         <h2 class="heading reveal">Тайминг</h2>
         <div class="timeline">
           <div class="event reveal">
-            <div class="event-dot">01</div>
+            <div class="event-dot"><img src="Photo14.jpeg" alt="" loading="lazy"></div>
             <div>
               <div class="event-time">16:00</div>
               <div class="event-title">Сбор гостей</div>
@@ -644,7 +786,7 @@
             </div>
           </div>
           <div class="event reveal">
-            <div class="event-dot">02</div>
+            <div class="event-dot"><img src="Photo15.jpeg" alt="" loading="lazy"></div>
             <div>
               <div class="event-time">16:30</div>
               <div class="event-title">Регистрация</div>
@@ -652,7 +794,7 @@
             </div>
           </div>
           <div class="event reveal">
-            <div class="event-dot">03</div>
+            <div class="event-dot"><img src="Photo16.jpeg" alt="" loading="lazy"></div>
             <div>
               <div class="event-time">17:00</div>
               <div class="event-title">Банкет</div>
@@ -660,7 +802,7 @@
             </div>
           </div>
           <div class="event reveal">
-            <div class="event-dot">04</div>
+            <div class="event-dot"><img src="Photo17.jpeg" alt="" loading="lazy"></div>
             <div>
               <div class="event-time">23:00</div>
               <div class="event-title">Окончание свадебного дня</div>
@@ -681,6 +823,7 @@
            href="https://yandex.ru/maps/75/vladivostok/search/%D0%9D%D0%B0%D0%B1%D0%B5%D1%80%D0%B5%D0%B6%D0%BD%D0%B0%D1%8F%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%2C%2013%20%D0%9C%D0%A4%D0%9A%20%D0%91%D1%83%D1%80%D0%BD%D1%8B%D0%B9%20%D0%B7%D0%B0%D0%BB%20%D0%9A%D0%BE%D0%BD%D1%82%D0%B8%D0%BD%D0%B5%D0%BD%D1%82/?ll=131.870593%2C43.113581&sll=131.871174%2C43.111745&sspn=0.012631%2C0.006022&z=17.21"
            target="_blank" rel="noopener">Открыть карту</a>
       </div>
+      <img class="location-photo reveal" src="Photo13.jpeg" alt="Локация" loading="lazy">
     </section>
 
     <!-- 6. Дресс-код -->
@@ -706,24 +849,24 @@
       <div class="section-inner">
         <h2 class="heading reveal">Женские образы</h2>
         <div class="gallery">
-          <figure class="look-card reveal"><img src="Photo1.jpg" alt="Женский образ 1" loading="lazy"></figure>
-          <figure class="look-card reveal"><img src="Photo2.jpg" alt="Женский образ 2" loading="lazy"></figure>
-          <figure class="look-card reveal"><img src="Photo3.jpg" alt="Женский образ 3" loading="lazy"></figure>
-          <figure class="look-card reveal"><img src="Photo4.jpg" alt="Женский образ 4" loading="lazy"></figure>
-          <figure class="look-card reveal"><img src="Photo5.jpg" alt="Женский образ 5" loading="lazy"></figure>
-          <figure class="look-card reveal"><img src="Photo6.jpg" alt="Женский образ 6" loading="lazy"></figure>
-          <figure class="look-card reveal"><img src="Photo7.jpg" alt="Женский образ 7" loading="lazy"></figure>
-          <figure class="look-card reveal"><img src="Photo8.jpg" alt="Женский образ 8" loading="lazy"></figure>
+          <figure class="look-card reveal"><img src="Photo1.jpeg" alt="Женский образ 1" loading="lazy"></figure>
+          <figure class="look-card reveal"><img src="Photo2.jpeg" alt="Женский образ 2" loading="lazy"></figure>
+          <figure class="look-card reveal"><img src="Photo3.jpeg" alt="Женский образ 3" loading="lazy"></figure>
+          <figure class="look-card reveal"><img src="Photo4.jpeg" alt="Женский образ 4" loading="lazy"></figure>
+          <figure class="look-card reveal"><img src="Photo5.jpeg" alt="Женский образ 5" loading="lazy"></figure>
+          <figure class="look-card reveal"><img src="Photo6.jpeg" alt="Женский образ 6" loading="lazy"></figure>
+          <figure class="look-card reveal"><img src="Photo7.jpeg" alt="Женский образ 7" loading="lazy"></figure>
+          <figure class="look-card reveal"><img src="Photo8.jpeg" alt="Женский образ 8" loading="lazy"></figure>
         </div>
 
         <div class="looks-divider"></div>
 
         <h2 class="heading reveal">Мужские образы</h2>
         <div class="gallery">
-          <figure class="look-card reveal"><img src="Photo9.jpg" alt="Мужской образ 1" loading="lazy"></figure>
-          <figure class="look-card reveal"><img src="Photo10.jpg" alt="Мужской образ 2" loading="lazy"></figure>
-          <figure class="look-card reveal"><img src="Photo11.jpg" alt="Мужской образ 3" loading="lazy"></figure>
-          <figure class="look-card reveal"><img src="Photo12.jpg" alt="Мужской образ 4" loading="lazy"></figure>
+          <figure class="look-card reveal"><img src="Photo9.jpeg" alt="Мужской образ 1" loading="lazy"></figure>
+          <figure class="look-card reveal"><img src="Photo10.jpeg" alt="Мужской образ 2" loading="lazy"></figure>
+          <figure class="look-card reveal"><img src="Photo11.jpeg" alt="Мужской образ 3" loading="lazy"></figure>
+          <figure class="look-card reveal"><img src="Photo12.jpeg" alt="Мужской образ 4" loading="lazy"></figure>
         </div>
       </div>
     </section>
@@ -738,7 +881,7 @@
         </p>
 
         <div class="hint-item reveal">
-          <div class="hint-icon">✿</div>
+          <div class="hint-icon"><img src="Photo18.jpeg" alt="" loading="lazy"></div>
           <div>
             <h3 class="hint-title">Цветы</h3>
             <p class="hint-text">
@@ -750,17 +893,17 @@
         </div>
 
         <div class="hint-item reveal">
-          <div class="hint-icon">♡</div>
+          <div class="hint-icon"><img src="Photo19.jpeg" alt="" loading="lazy"></div>
           <div>
             <p class="hint-text">
               Ваша улыбка и хорошее настроение — главное для нас в этот вечер!<br>Если вы захотите сделать нам ценный и нужный подарок, мы будем очень благодарны
               за подарок в виде конверта, чтобы ваши и наши руки были свободны для объятий.
-            </p>по
+            </p>
           </div>
         </div>
 
         <div class="hint-item reveal">
-          <div class="hint-icon">♧</div>
+          <div class="hint-icon"><img src="Photo20.jpeg" alt="" loading="lazy"></div>
           <div>
             <h3 class="hint-title">Маленькие гости</h3>
             <p class="hint-text">
@@ -777,7 +920,7 @@
         </div>
 
         <div class="hint-item reveal">
-          <div class="hint-icon">◌</div>
+          <div class="hint-icon"><img src="Photo21.jpeg" alt="" loading="lazy"></div>
           <div>
             <h3 class="hint-title">Поздравления</h3>
             <p class="hint-text">
@@ -788,7 +931,7 @@
         </div>
 
         <div class="hint-item reveal">
-          <div class="hint-icon">✧</div>
+          <div class="hint-icon"><img src="Photo22.jpeg" alt="" loading="lazy"></div>
           <div>
             <h3 class="hint-title">Сюрпризы</h3>
             <p class="hint-text">
@@ -801,7 +944,7 @@
         </div>
 
         <div class="hint-item reveal">
-          <div class="hint-icon">◒</div>
+          <div class="hint-icon"><img src="Photo23.jpeg" alt="" loading="lazy"></div>
           <div>
             <h3 class="hint-title">Важно!</h3>
             <p class="hint-text">
@@ -810,11 +953,33 @@
             </p>
           </div>
         </div>
+
+        <div class="hint-item reveal">
+          <div class="hint-icon"><img src="Photo24.jpeg" alt="Позвонить" loading="lazy"></div>
+          <div>
+            <h3 class="hint-title">Телефон для связи</h3>
+            <p class="hint-text">
+              Если у вас остались вопросы, звоните — с радостью ответим.
+            </p>
+            <a class="hint-phone-link" href="tel:+79532066965" aria-label="Позвонить +7 953 206-69-65">
+              <span class="call-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="1.4"/>
+                  <path d="M8.2 7.6c-.3.6-.5 1.5-.2 2.6.5 2 2 4 3.9 5.8 1.8 1.7 3.7 3 5.7 3.4 1 .2 1.9-.1 2.4-.5.3-.2.5-.6.4-1l-.4-1.4c-.1-.4-.5-.7-.9-.8l-1.8-.4c-.3-.1-.7 0-.9.3l-.5.6c-1.2-.6-2.2-1.5-3.1-2.5-.9-1-1.7-2.1-2.2-3.4l.6-.5c.3-.2.4-.6.3-.9l-.5-1.8c-.1-.4-.4-.7-.8-.8l-1.4-.3c-.4-.1-.8.1-1 .5z" fill="currentColor"/>
+                </svg>
+              </span>
+              +7 953 206-69-65
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- 9. RSVP -->
-    <section class="section rsvp">
+    <section class="section rsvp has-video-bg">
+      <div class="video-bg-wrap">
+        <video src="bg-video.mp4" autoplay muted loop playsinline></video>
+      </div>
       <div class="section-inner">
         <h2 class="heading reveal">АНКЕТА ГОСТЯ</h2>
         <p class="body-copy reveal" style="opacity:.78; margin-bottom:28px">
@@ -824,6 +989,14 @@
         <!--
           ВАЖНО: замените ACTION_URL на URL опубликованного Google Apps Script Web App.
           Пример: https://script.google.com/macros/s/XXXXXXXX/exec
+
+          В Google-таблице (лист, куда пишет Apps Script) добавьте столбец "Напитки" —
+          в него будет попадать строка со всеми выбранными гостем напитками через запятую
+          (например: "Шампанское, Виски"). Поле формы уже называется name="Напитки",
+          поэтому в самом Apps Script менять ничего не нужно: если скрипт пишет все
+          поля из e.parameter по заголовкам столбцов, значение подтянется автоматически.
+          Если скрипт перечисляет столбцы вручную (row.push(...)), добавьте туда
+          e.parameter['Напитки'] в нужном порядке.
         -->
         <form class="form reveal" id="rsvpForm"
               action="ACTION_URL"
@@ -856,6 +1029,21 @@
           </div>
 
           <div class="field">
+            <label>Ваши предпочтения по напиткам</label>
+            <div class="checkbox-group" id="drinksGroup">
+              <label class="checkbox-option"><input type="checkbox" value="Шампанское">Шампанское</label>
+              <label class="checkbox-option"><input type="checkbox" value="Вино красное">Вино красное</label>
+              <label class="checkbox-option"><input type="checkbox" value="Вино белое">Вино белое</label>
+              <label class="checkbox-option"><input type="checkbox" value="Виски">Виски</label>
+              <label class="checkbox-option"><input type="checkbox" value="Коньяк">Коньяк</label>
+              <label class="checkbox-option"><input type="checkbox" value="Ром">Ром</label>
+              <label class="checkbox-option"><input type="checkbox" value="Джин">Джин</label>
+              <label class="checkbox-option"><input type="checkbox" value="Не буду пить алкоголь">Не буду пить алкоголь</label>
+            </div>
+            <input type="hidden" id="drinksValue" name="Напитки">
+          </div>
+
+          <div class="field">
             <label for="comment">Комментарий</label>
             <textarea id="comment" name="Комментарий"
                       placeholder="Если хотите что-то сообщить нам"></textarea>
@@ -875,9 +1063,11 @@
 
     <!-- 10. Финал -->
     <footer class="section footer">
-      <div class="section-inner reveal">
-        <div class="footer-names">Ваши<br><br>Егор и Жанна</div>
-             </div>
+      <div class="section-inner">
+        <div class="footer-names reveal" id="footerNames">
+          <span>Ваши</span><span>Егор и Жанна</span>
+        </div>
+      </div>
     </footer>
   </main>
 
@@ -915,6 +1105,10 @@
     const status = document.getElementById("formStatus");
 
     form.addEventListener("submit", () => {
+      const checked = [...document.querySelectorAll("#drinksGroup input[type='checkbox']:checked")]
+        .map(el => el.value);
+      document.getElementById("drinksValue").value = checked.join(", ");
+
       const button = form.querySelector("button[type='submit']");
       button.disabled = true;
       button.textContent = "Отправляем…";
