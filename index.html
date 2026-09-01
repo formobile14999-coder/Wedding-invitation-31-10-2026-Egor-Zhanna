@@ -49,42 +49,6 @@
     }
     button, input, textarea, select { font: inherit; }
 
-    /* Opening fade */
-    .page-loader {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: grid;
-      place-items: center;
-      background: var(--navy);
-      color: white;
-      transition: opacity 1.2s ease, visibility 1.2s ease;
-    }
-    .page-loader.is-hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    .loader-names {
-      font-family: Caravan, "Brush Script MT", cursive;
-      font-size: clamp(62px, 18.4vw, 115px);
-      font-weight: 400;
-      text-align: center;
-      animation: loaderIn 1.5s ease both;
-    }
-    .loader-date {
-      margin-top: -4px;
-      text-align: center;
-      letter-spacing: .16em;
-      font-size: 12px;
-      opacity: .7;
-      animation: loaderIn 1.5s .25s ease both;
-    }
-    @keyframes loaderIn {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     main { width: 100%; }
 
     /* Видео-фон для секций, где раньше был синий градиент */
@@ -165,7 +129,7 @@
     .eyebrow {
       text-transform: uppercase;
       letter-spacing: .12em;
-      font-size: 30px;
+      font-size: 16.7px;
       line-height: 1.25;
       opacity: .9;
       margin-bottom: 40px;
@@ -538,19 +502,16 @@
     .hint-icon {
       width: 48px;
       height: 48px;
-      border-radius: 50%;
-      overflow: hidden;
       display: grid;
       place-items: center;
       color: var(--navy);
       font-size: 29px;
       opacity: .92;
-      background: #e8eef5;
     }
     .hint-icon img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
     .hint-phone-link {
       display: inline-flex;
@@ -759,13 +720,6 @@
 </head>
 
 <body>
-  <div class="page-loader" id="loader" aria-hidden="true">
-    <div>
-      <div class="loader-names">Егор и Жанна</div>
-      <div class="loader-date">31 ОКТЯБРЬ 2026</div>
-    </div>
-  </div>
-
   <main>
     <!-- 1. Обложка -->
     <section class="section hero has-video-bg">
@@ -1044,7 +998,7 @@
           e.parameter['Напитки'] в нужном порядке.
         -->
         <form class="form reveal" id="rsvpForm"
-              action="ACTION_URL"
+              action="https://script.google.com/macros/s/AKfycbw_XYHCC1an7u-SZ0nsVvAkhnHL5lkFu19by89z9Ffm2j_EgERlaFACQqAifI3x8Ik/exec"
               method="POST"
               target="rsvpFrame">
           <div class="field">
@@ -1118,10 +1072,6 @@
 
   <script>
     // Убираем экран загрузки после первого кадра.
-    window.addEventListener("load", () => {
-      setTimeout(() => document.getElementById("loader").classList.add("is-hidden"), 900);
-    });
-
     // Появление блоков при прокрутке строго в последовательности DOM.
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
